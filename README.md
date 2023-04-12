@@ -42,6 +42,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
 ##### Jinja2テンプレート利用版
+main.py
 ```
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
@@ -56,6 +57,7 @@ async def read_item(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "message": "Hello, world!"})
 ```
 
+index.html
 ```
 <!DOCTYPE html>
 <html>
@@ -68,3 +70,54 @@ async def read_item(request: Request):
     </body>
 </html>
 ```
+
+#### get(path parameter,query parameter)
+オプショナルにしたければ、デフォルトをNoneにする。  
+必須にしたい場合は、デフォルト値を宣言しない。
+```
+from typing import Union
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/users/{user_id}/items/{item_id}")
+async def read_user_item(
+    user_id: int, item_id: str, q: Union[str, None] = None, short: bool = False
+):
+    item = {"item_id": item_id, "owner_id": user_id}
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a long description"}
+        )
+    return item
+```
+
+##### post
+```
+from typing import Union
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+class Item(BaseModel):
+    name: str
+    description: Union[str, None] = None
+    price: float
+    tax: Union[float, None] = None
+
+
+app = FastAPI()
+
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
+```
+
+
+
