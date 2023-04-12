@@ -1,9 +1,9 @@
 # memo
 
-##### FastAPI
+### FastAPI
 
 同期、非同期のパフォーマンスの違いがよくわかる例  
-同期  
+##### 同期  
 ```
 import time
 from fastapi import FastAPI
@@ -15,7 +15,7 @@ async def root():
     time.sleep(5)
     return {"message": "Hello World"}
 ```
-非同期  
+##### 非同期  
 ```
 import asyncio
 from fastapi import FastAPI
@@ -36,12 +36,12 @@ async def async_endpoint(number: int):
 同期のパターンだと３人目のページが表示されるのは約15秒後  
 非同期のパターンだと3人目のページが表示されるのは約5秒後  
 
-起動コマンド
+##### 起動コマンド
 ```
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-Jinja2テンプレート利用版
+##### Jinja2テンプレート利用版
 ```
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
