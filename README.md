@@ -119,5 +119,31 @@ async def create_item(item: Item):
     return item
 ```
 
+form
+```
+from fastapi import FastAPI, Request, Form, Depends
+from fastapi.templating import Jinja2Templates
+from fastapi.middleware.csrf import CSRFMiddleware
 
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+app.add_middleware(CSRFMiddleware, secret_key="random_secret_key")
 
+@app.get("/")
+def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.post("/form")
+def form_post(request: Request, name: str = Form(...), age: int = Form(...), token: str = Depends()):
+    return templates.TemplateResponse("result.html", {"request": request, "name": name, "age": age})
+```
+
+html
+```
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="text" name="name">
+  <input type="number" name="age">
+  <button type="submit">Submit</button>
+</form>
+```
