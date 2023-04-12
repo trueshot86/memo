@@ -36,3 +36,35 @@ async def async_endpoint(number: int):
 同期のパターンだと３人目のページが表示されるのは約15秒後  
 非同期のパターンだと3人目のページが表示されるのは約5秒後  
 
+起動コマンド
+```
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Jinja2テンプレート利用版
+```
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request, "message": "Hello, world!"})
+```
+
+```
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ message }}</title>
+    </head>
+    <body>
+        <h1>{{ message }}</h1>
+        <p>Request URL: {{ request.url.path }}</p>
+    </body>
+</html>
+```
