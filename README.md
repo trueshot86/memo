@@ -147,3 +147,19 @@ html
   <button type="submit">Submit</button>
 </form>
 ```
+### Linux
+/etc/systemd/system/xxxxx.service
+##### systemd
+```
+[Unit]
+Description=xxxxx.sh
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /root/xxxxx.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+systemctl daemon-reload  
+
