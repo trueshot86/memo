@@ -96,6 +96,44 @@ async def read_user_item(
     return item
 ```
 
+#### mysql(pymysql is mit license)
+```
+# mysql info
+mysql_host = "xxxxx"
+mysql_port = 3306
+mysql_user = "root"
+mysql_password = "xxxxx"
+mysql_db = "xxxxx"
+
+# mysql connect function
+def get_mysql_connection():
+    return pymysql.connect(
+        host=mysql_host,
+        port=mysql_port,
+        user=mysql_user,
+        password=mysql_password,
+        db=mysql_db,
+        charset="utf8mb4",
+        cursorclass=pymysql.cursors.DictCursor,
+    )
+
+@app.get("/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    try:
+        connection = get_mysql_connection()
+        with connection.cursor() as cursor:
+            sql = "SELECT volt FROM sensor_data order by id desc limit 1"
+            cursor.execute(sql)
+            data = cursor.fetchall()
+        return templates.TemplateResponse("index.html", {"request": request, "data": data, "message": "Hello,World!"})
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        connection.close()
+```
+
+
+
 ##### post
 ```
 from typing import Union
