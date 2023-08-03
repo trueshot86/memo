@@ -132,6 +132,15 @@ async def read_item(request: Request):
         connection.close()
 ```
 
+indexへ渡す部分
+```
+        <h1>Data from MySQL:</h1>
+        <ul>
+        {% for row in data %}
+            <li>{{ row.volt（カラム名） }}</li>
+        {% endfor %}
+        </ul>
+```
 
 
 ##### post
