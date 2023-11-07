@@ -210,3 +210,7 @@ WantedBy=multi-user.target
 ```
 systemctl daemon-reload  
 
+### Nvidia
+```
+nvidia-smi --query-gpu=name --format=csv
+```
